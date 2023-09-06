@@ -8,12 +8,12 @@ namespace Cevent
         {
             var stock = new Stock("Amazon");
             stock.Price = 129;
-            stock.OnPriceChanged += Stock_OnPriceChanged;
+            stock.PriceChanged += Stock_OnPriceChanged;// subscriber 
             stock.Change(0.05m);
             stock.Change(0.5m);
-            stock.OnPriceChanged -= Stock_OnPriceChanged;
+            stock.PriceChanged -= Stock_OnPriceChanged;//un subscribe
             stock.Change(-0.05m);
-            stock.OnPriceChanged += Stock_OnPriceChanged;
+            stock.PriceChanged += Stock_OnPriceChanged;
 
             stock.Change(0.00m);
 
@@ -61,15 +61,16 @@ public class Stock
         this._name = StockName;
     }
 
-    public event OnpriceChange OnPriceChanged;
+    public event OnpriceChange PriceChanged;
 
     public void Change(decimal percent)
     {
         decimal OldPrice = this._price;
         this._price += Math.Round(this._price * percent, 2);
-        if (OnPriceChanged!=null)
+        // Raising Event
+        if (PriceChanged!=null)
         {
-            OnPriceChanged(this, OldPrice);
+            PriceChanged(this, OldPrice);
         }
     }
 }
